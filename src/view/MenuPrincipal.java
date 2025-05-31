@@ -2,6 +2,7 @@ package view;
 
 import controller.AlunoController;
 import controller.PlanoController;
+import controller.FuncionarioController;
 import model.Plano;
 
 import java.util.Scanner;
