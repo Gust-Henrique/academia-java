@@ -1,4 +1,3 @@
-/*
 package view;
 
 import controller.AlunoController;
@@ -128,4 +127,3 @@ public class MenuPrincipal {
 
     }
 }
- */
