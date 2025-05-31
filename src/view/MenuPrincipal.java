@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class MenuPrincipal {
     private final AlunoController alunoController = new AlunoController();
     private final PlanoController planoController = new PlanoController();
+    private final FuncionarioController funcionarioController = new FuncionarioController();
     private final Scanner scanner = new Scanner(System.in);
 
     public void exibirMenu() {
