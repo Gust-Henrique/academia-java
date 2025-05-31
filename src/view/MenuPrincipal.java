@@ -101,6 +101,8 @@ public class MenuPrincipal {
 
         alunoController.removerAluno(indice);
 
+    }
+
 
     private void cadastrarFuncionario() {
         System.out.print("Nome: ");
@@ -126,5 +128,4 @@ public class MenuPrincipal {
         funcionarioController.removerFuncionario(indice);
     }
 
-    }
 }
