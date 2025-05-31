@@ -101,7 +101,6 @@ public class MenuPrincipal {
 
         alunoController.removerAluno(indice);
 
-        private final FuncionarioController funcionarioController = new FuncionarioController();
 
     private void cadastrarFuncionario() {
         System.out.print("Nome: ");
