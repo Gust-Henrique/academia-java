@@ -1,10 +1,9 @@
 package controller;
 
-import model.Funcionario;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.Funcionario;
 
 public class FuncionarioController {
     private List<Funcionario> funcionarios = new ArrayList<>();
@@ -47,7 +46,7 @@ public class FuncionarioController {
             System.out.println("Índice inválido.");
         }
     }
-public Funcionario buscarFuncionarioPorIndice(int indice) {
+  public Funcionario buscarFuncionarioPorIndice(int indice) {
         if (indice >= 0 && indice < funcionarios.size()) {
             return funcionarios.get(indice);
         }

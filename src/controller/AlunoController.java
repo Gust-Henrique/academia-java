@@ -1,11 +1,10 @@
 package controller;
 
-import model.Aluno;
-import model.Plano;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.Aluno;
+import model.Plano;
 
 public class AlunoController {
     private List<Aluno> alunos = new ArrayList<>();
@@ -15,18 +14,39 @@ public class AlunoController {
     public AlunoController() {
         carregarDados();
     }
-public void cadastrarAluno(String nome, String cpf, String email, String telefone, String matricula, Plano plano) {
+
+    public void cadastrarAluno(String nome, String cpf, String email, String telefone, String matricula, Plano plano) {
         if (existeCpf(cpf)) {
             System.out.println("Já existe um aluno com esse CPF!");
+            return;
+        }
+
+        if (!cpfValido(cpf)) {
+            System.out.println("CPF inválido. Use o formato 000.000.000-00");
+            return;
+        }
+
+        if (!emailValido(email)) {
+            System.out.println("E-mail inválido.");
+            return;
+        }
+
+        if (existeMatricula(matricula)) {
+            System.out.println("Já existe um aluno com essa matrícula!");
+            return;
+        }
+
+        if (!matriculaValida(matricula)) {
+            System.out.println("Matrícula inválida. Use apenas letras e números, sem espaços.");
             return;
         }
 
         Aluno aluno = new Aluno(nome, cpf, email, telefone, matricula, plano);
         alunos.add(aluno);
         salvarDados();
-        registrarLog("Aluno cadastrado: " + nome + " | CPF: " + cpf);
+        registrarLog("Aluno cadastrado: " + nome + " | CPF: " + cpf + " | Matrícula: " + matricula);
+        System.out.println("Aluno cadastrado com sucesso!");
     }
-
     public void listarAlunos() {
         if (alunos.isEmpty()) {
             System.out.println("Nenhum aluno cadastrado.");
@@ -43,13 +63,30 @@ public void cadastrarAluno(String nome, String cpf, String email, String telefon
             Aluno removido = alunos.remove(indice);
             salvarDados();
             registrarLog("Aluno removido: " + removido.getNome());
+            System.out.println("Aluno removido com sucesso!");
         } else {
             System.out.println("Índice inválido.");
         }
     }
 
-    public boolean existeCpf(String cpf) {
+    private boolean existeCpf(String cpf) {
         return alunos.stream().anyMatch(a -> a.getCpf().equals(cpf));
+    }
+
+    private boolean existeMatricula(String matricula) {
+        return alunos.stream().anyMatch(a -> a.getMatricula().equalsIgnoreCase(matricula));
+    }
+
+    private boolean cpfValido(String cpf) {
+        return cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}");
+    }
+
+    private boolean emailValido(String email) {
+        return email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
+    }
+
+    private boolean matriculaValida(String matricula) {
+        return matricula.matches("^[a-zA-Z0-9]+$");
     }
 
     private void salvarDados() {
@@ -59,7 +96,7 @@ public void cadastrarAluno(String nome, String cpf, String email, String telefon
             System.out.println("Erro ao salvar dados de alunos.");
         }
     }
-private void carregarDados() {
+    private void carregarDados() {
         File file = new File(arquivo);
         if (!file.exists()) return;
 
@@ -78,4 +115,3 @@ private void carregarDados() {
         }
     }
 }
-
