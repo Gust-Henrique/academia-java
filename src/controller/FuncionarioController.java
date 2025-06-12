@@ -1,9 +1,10 @@
 package controller;
 
+import model.Funcionario;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Funcionario;
 
 public class FuncionarioController {
     private List<Funcionario> funcionarios = new ArrayList<>();
@@ -20,10 +21,21 @@ public class FuncionarioController {
             return;
         }
 
+        if (!cpfValido(cpf)) {
+            System.out.println("CPF inválido. Use o formato 000.000.000-00");
+            return;
+        }
+
+        if (!emailValido(email)) {
+            System.out.println("E-mail inválido.");
+            return;
+        }
+
         Funcionario funcionario = new Funcionario(nome, cpf, email, telefone, cargo);
         funcionarios.add(funcionario);
         salvarDados();
         registrarLog("Funcionário cadastrado: " + nome + " | CPF: " + cpf);
+        System.out.println("Funcionário cadastrado com sucesso!");
     }
 
     public void listarFuncionarios() {
@@ -42,19 +54,21 @@ public class FuncionarioController {
             Funcionario removido = funcionarios.remove(indice);
             salvarDados();
             registrarLog("Funcionário removido: " + removido.getNome());
+            System.out.println("Funcionário removido com sucesso!");
         } else {
             System.out.println("Índice inválido.");
         }
     }
-  public Funcionario buscarFuncionarioPorIndice(int indice) {
-        if (indice >= 0 && indice < funcionarios.size()) {
-            return funcionarios.get(indice);
-        }
-        return null;
+private boolean existeCpf(String cpf) {
+        return funcionarios.stream().anyMatch(f -> f.getCpf().equals(cpf));
     }
 
-    public boolean existeCpf(String cpf) {
-        return funcionarios.stream().anyMatch(f -> f.getCpf().equals(cpf));
+    private boolean cpfValido(String cpf) {
+        return cpf.matches("\\d{3}\\.\d{3}\\.\\d{3}-\\d{2}");
+    }
+
+    private boolean emailValido(String email) {
+        return email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
     }
 
     private void salvarDados() {
