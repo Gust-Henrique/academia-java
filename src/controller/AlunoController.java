@@ -2,52 +2,80 @@ package controller;
 
 import model.Aluno;
 import model.Plano;
-import util.Serializador;
-import util.Log;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoController {
-    private List<Aluno> alunos;
-    private final String ARQUIVO = "alunos.dat";
+    private List<Aluno> alunos = new ArrayList<>();
+    private final String arquivo = "alunos.dat";
+    private final String log = "log.txt";
 
     public AlunoController() {
-        alunos = Serializador.carregarAlunos(ARQUIVO);
+        carregarDados();
     }
+public void cadastrarAluno(String nome, String cpf, String email, String telefone, String matricula, Plano plano) {
+        if (existeCpf(cpf)) {
+            System.out.println("Já existe um aluno com esse CPF!");
+            return;
+        }
 
-    public void cadastrarAluno(String nome, String cpf, String email, String telefone, String matricula, Plano plano) {
         Aluno aluno = new Aluno(nome, cpf, email, telefone, matricula, plano);
         alunos.add(aluno);
-        Serializador.salvarAlunos(alunos, ARQUIVO);
-        Log.registrar("Aluno cadastrado: " + nome);
-        System.out.println(" Aluno cadastrado com sucesso!");
+        salvarDados();
+        registrarLog("Aluno cadastrado: " + nome + " | CPF: " + cpf);
     }
 
     public void listarAlunos() {
         if (alunos.isEmpty()) {
-            System.out.println(" Nenhum aluno cadastrado.");
-        } else {
-            System.out.println(" Lista de Alunos:");
-            for (int i = 0; i < alunos.size(); i++) {
-                System.out.println((i + 1) + ". " + alunos.get(i));
-            }
+            System.out.println("Nenhum aluno cadastrado.");
+            return;
+        }
+
+        for (int i = 0; i < alunos.size(); i++) {
+            System.out.println((i + 1) + ". " + alunos.get(i));
         }
     }
 
     public void removerAluno(int indice) {
         if (indice >= 0 && indice < alunos.size()) {
-            String nomeRemovido = alunos.get(indice).getNome();
-            alunos.remove(indice);
-            Serializador.salvarAlunos(alunos, ARQUIVO);
-            Log.registrar("Aluno removido: " + nomeRemovido);
-            System.out.println(" Aluno removido com sucesso.");
+            Aluno removido = alunos.remove(indice);
+            salvarDados();
+            registrarLog("Aluno removido: " + removido.getNome());
         } else {
-            System.out.println(" Índice inválido.");
+            System.out.println("Índice inválido.");
         }
     }
 
-    public List<Aluno> getAlunos() {
-        return alunos;
+    public boolean existeCpf(String cpf) {
+        return alunos.stream().anyMatch(a -> a.getCpf().equals(cpf));
+    }
+
+    private void salvarDados() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
+            out.writeObject(alunos);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar dados de alunos.");
+        }
+    }
+private void carregarDados() {
+        File file = new File(arquivo);
+        if (!file.exists()) return;
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            alunos = (List<Aluno>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar dados de alunos.");
+        }
+    }
+
+    private void registrarLog(String mensagem) {
+        try (FileWriter fw = new FileWriter(log, true)) {
+            fw.write(mensagem + "\n");
+        } catch (IOException e) {
+            System.out.println("Erro ao escrever no log.");
+        }
     }
 }
+

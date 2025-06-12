@@ -1,59 +1,49 @@
 package controller;
 
 import model.Funcionario;
-import util.Serializador;
-import util.Log;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FuncionarioController {
-    private List<Funcionario> funcionarios;
-    private final String ARQUIVO = "funcionarios.dat";
+    private List<Funcionario> funcionarios = new ArrayList<>();
+    private final String arquivo = "funcionarios.dat";
+    private final String log = "log.txt";
 
     public FuncionarioController() {
-        funcionarios = Serializador.carregarFuncionarios(ARQUIVO);
+        carregarDados();
     }
 
     public void cadastrarFuncionario(String nome, String cpf, String email, String telefone, String cargo) {
-        Funcionario f = new Funcionario(nome, cpf, email, telefone, cargo);
-        funcionarios.add(f);
-        Serializador.salvarFuncionarios(funcionarios, ARQUIVO);
-        Log.registrar("Funcionário cadastrado: " + nome);
-        System.out.println(" Funcionário cadastrado com sucesso!");
+        if (existeCpf(cpf)) {
+            System.out.println("Já existe um funcionário com esse CPF!");
+            return;
+        }
+
+        Funcionario funcionario = new Funcionario(nome, cpf, email, telefone, cargo);
+        funcionarios.add(funcionario);
+        salvarDados();
+        registrarLog("Funcionário cadastrado: " + nome + " | CPF: " + cpf);
     }
 
     public void listarFuncionarios() {
         if (funcionarios.isEmpty()) {
-            System.out.println(" Nenhum funcionário cadastrado.");
-        } else {
-            System.out.println(" Lista de Funcionários:");
-            for (int i = 0; i < funcionarios.size(); i++) {
-                System.out.println((i + 1) + ". " + funcionarios.get(i));
-            }
+            System.out.println("Nenhum funcionário cadastrado.");
+            return;
+        }
+
+        for (int i = 0; i < funcionarios.size(); i++) {
+            System.out.println((i + 1) + ". " + funcionarios.get(i));
         }
     }
 
     public void removerFuncionario(int indice) {
         if (indice >= 0 && indice < funcionarios.size()) {
-            String nomeRemovido = funcionarios.get(indice).getNome();
-            funcionarios.remove(indice);
-            Serializador.salvarFuncionarios(funcionarios, ARQUIVO);
-            Log.registrar("Funcionário removido: " + nomeRemovido);
-            System.out.println(" Funcionário removido com sucesso.");
+            Funcionario removido = funcionarios.remove(indice);
+            salvarDados();
+            registrarLog("Funcionário removido: " + removido.getNome());
         } else {
-            System.out.println(" Índice inválido.");
+            System.out.println("Índice inválido.");
         }
     }
-
-    public List<Funcionario> getFuncionarios() {
-        return funcionarios;
-    }
-
-    public Funcionario buscarFuncionarioPorIndice(int indice) {
-    if (indice >= 0 && indice < funcionarios.size()) {
-        return funcionarios.get(indice);
-    }
-    return null;
-    }
-}
