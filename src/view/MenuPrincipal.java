@@ -51,6 +51,12 @@ public class MenuPrincipal {
 
 
     private void cadastrarPlano() {
+
+         if (funcionarioController.getFuncionarios().isEmpty()) {
+            System.out.println("Nenhum funcionário cadastrado. Cadastre um funcionário antes de criar planos.");
+            return;
+        }
+
     System.out.print("Nome do plano: ");
     String nome = scanner.nextLine();
     System.out.print("Preço do plano: R$ ");
@@ -81,6 +87,12 @@ public class MenuPrincipal {
     }
 
     private void cadastrarAluno() {
+
+        if (planoController.getPlanos().isEmpty()) {
+            System.out.println("Nenhum plano cadastrado. Cadastre um plano antes de adicionar alunos.");
+            return;
+        }
+
         System.out.print("Nome do aluno: ");
         String nome = scanner.nextLine();
         System.out.print("CPF: ");
