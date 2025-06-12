@@ -49,4 +49,11 @@ public class FuncionarioController {
     public List<Funcionario> getFuncionarios() {
         return funcionarios;
     }
+
+    public Funcionario buscarFuncionarioPorIndice(int indice) {
+    if (indice >= 0 && indice < funcionarios.size()) {
+        return funcionarios.get(indice);
+    }
+    return null;
+    }
 }

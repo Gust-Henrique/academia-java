@@ -48,7 +48,7 @@ public class MenuPrincipal {
         } while (opcao != 0);
     }
 
-    private void cadastrarPlano() {
+    /*private void cadastrarPlano() {
         System.out.print("Nome do plano: ");
         String nome = scanner.nextLine();
         System.out.print("Preço do plano: R$ ");
@@ -56,6 +56,27 @@ public class MenuPrincipal {
         scanner.nextLine();
 
         planoController.cadastrarPlano(nome, preco);
+    }*/
+
+    private void cadastrarPlano() {
+    System.out.print("Nome do plano: ");
+    String nome = scanner.nextLine();
+    System.out.print("Preço do plano: R$ ");
+    double preco = scanner.nextDouble();
+    scanner.nextLine();
+
+    funcionarioController.listarFuncionarios();
+    System.out.print("Escolha o número do responsável pelo plano: ");
+    int indiceResponsavel = scanner.nextInt() - 1;
+    scanner.nextLine();
+
+    Funcionario responsavel = funcionarioController.buscarFuncionarioPorIndice(indiceResponsavel);
+    if (responsavel == null) {
+        System.out.println("Funcionário inválido. Cadastro cancelado.");
+        return;
+    }
+
+    planoController.cadastrarPlano(nome, preco, responsavel);
     }
 
     private void removerPlano() {
