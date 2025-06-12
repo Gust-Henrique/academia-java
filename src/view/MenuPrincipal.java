@@ -3,6 +3,7 @@ package view;
 import controller.AlunoController;
 import controller.PlanoController;
 import controller.FuncionarioController;
+import model.Funcionario;
 import model.Plano;
 
 import java.util.Scanner;
@@ -39,24 +40,15 @@ public class MenuPrincipal {
                 case 4 -> funcionarioController.listarFuncionarios();
                 case 5 -> planoController.listarPlanos();
                 case 6 -> alunoController.listarAlunos();
-                case 9 -> removerFuncionario();
-                case 7 -> removerPlano();
-                case 8 -> removerAluno();
+                case 7 -> removerFuncionario();
+                case 8 -> removerPlano();
+                case 9 -> removerAluno();
                 case 0 -> System.out.println("Encerrando...");
                 default -> System.out.println("Opção inválida.");
             }
         } while (opcao != 0);
     }
 
-    /*private void cadastrarPlano() {
-        System.out.print("Nome do plano: ");
-        String nome = scanner.nextLine();
-        System.out.print("Preço do plano: R$ ");
-        double preco = scanner.nextDouble();
-        scanner.nextLine();
-
-        planoController.cadastrarPlano(nome, preco);
-    }*/
 
     private void cadastrarPlano() {
     System.out.print("Nome do plano: ");
