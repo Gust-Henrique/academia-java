@@ -18,30 +18,30 @@ public class MenuPrincipal {
 
         do {
             System.out.println("\n=== MENU PRINCIPAL - SISTEMA DE ACADEMIA ===");
-            System.out.println("1. Cadastrar plano");
-            System.out.println("2. Listar planos");
-            System.out.println("3. Remover plano");
-            System.out.println("4. Cadastrar aluno");
-            System.out.println("5. Listar alunos");
-            System.out.println("6. Remover aluno");
-            System.out.println("7. Cadastrar funcionário");
-            System.out.println("8. Listar funcionários");
-            System.out.println("9. Remover funcionário");
+            System.out.println("1. Cadastrar funcionário");
+            System.out.println("2. Cadastrar plano");
+            System.out.println("3. Cadastrar aluno");
+            System.out.println("4. Listar funcionários");
+            System.out.println("5. Listar planos");
+            System.out.println("6. Listar alunos");
+            System.out.println("7. Remover funcionário");
+            System.out.println("8. Remover plano");
+            System.out.println("9. Remover aluno");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine();
 
             switch (opcao) {
-                case 1 -> cadastrarPlano();
-                case 2 -> planoController.listarPlanos();
-                case 3 -> removerPlano();
-                case 4 -> cadastrarAluno();
-                case 5 -> alunoController.listarAlunos();
-                case 6 -> removerAluno();
-                case 7 -> cadastrarFuncionario();
-                case 8 -> funcionarioController.listarFuncionarios();
+                case 1 -> cadastrarFuncionario();
+                case 2 -> cadastrarPlano();
+                case 3 -> cadastrarAluno();
+                case 4 -> funcionarioController.listarFuncionarios();
+                case 5 -> planoController.listarPlanos();
+                case 6 -> alunoController.listarAlunos();
                 case 9 -> removerFuncionario();
+                case 7 -> removerPlano();
+                case 8 -> removerAluno();
                 case 0 -> System.out.println("Encerrando...");
                 default -> System.out.println("Opção inválida.");
             }
