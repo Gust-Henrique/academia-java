@@ -47,3 +47,41 @@ public class FuncionarioController {
             System.out.println("Índice inválido.");
         }
     }
+public Funcionario buscarFuncionarioPorIndice(int indice) {
+        if (indice >= 0 && indice < funcionarios.size()) {
+            return funcionarios.get(indice);
+        }
+        return null;
+    }
+
+    public boolean existeCpf(String cpf) {
+        return funcionarios.stream().anyMatch(f -> f.getCpf().equals(cpf));
+    }
+
+    private void salvarDados() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
+            out.writeObject(funcionarios);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar dados de funcionários.");
+        }
+    }
+
+    private void carregarDados() {
+        File file = new File(arquivo);
+        if (!file.exists()) return;
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            funcionarios = (List<Funcionario>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar dados de funcionários.");
+        }
+    }
+
+    private void registrarLog(String mensagem) {
+        try (FileWriter fw = new FileWriter(log, true)) {
+            fw.write(mensagem + "\n");
+        } catch (IOException e) {
+            System.out.println("Erro ao escrever no log.");
+        }
+    }
+}
