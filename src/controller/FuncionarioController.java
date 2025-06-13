@@ -64,7 +64,7 @@ private boolean existeCpf(String cpf) {
     }
 
     private boolean cpfValido(String cpf) {
-        return cpf.matches("\\d{3}\\.\d{3}\\.\\d{3}-\\d{2}");
+        return cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}");
     }
 
     private boolean emailValido(String email) {
@@ -97,4 +97,17 @@ private boolean existeCpf(String cpf) {
             System.out.println("Erro ao escrever no log.");
         }
     }
+
+    public List<Funcionario> getFuncionarios() {
+    return funcionarios;
+}
+
+public Funcionario buscarFuncionarioPorIndice(int indice) {
+    if (indice >= 0 && indice < funcionarios.size()) {
+        return funcionarios.get(indice);
+    }
+    return null;
+}
+
+
 }

@@ -22,6 +22,7 @@ public class PlanoController {
         planos.add(plano);
         salvarDados();
         registrarLog("Plano cadastrado: " + plano.getNome() + " - Responsável: " + responsavel.getNome());
+        System.out.println("Plano cadastrado com sucesso!");
     }
 
     public void listarPlanos() {
@@ -40,6 +41,7 @@ public class PlanoController {
             Plano removido = planos.remove(indice);
             salvarDados();
             registrarLog("Plano removido: " + removido.getNome());
+            System.out.println("Plano removido com sucesso!");
         } else {
             System.out.println("Índice inválido.");
         }
@@ -78,4 +80,10 @@ public class PlanoController {
             System.out.println("Erro ao escrever no log.");
         }
     }
+
+    public List<Plano> getPlanos() {
+        return planos;
+    }
+
+
 }
