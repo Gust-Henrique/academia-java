@@ -16,34 +16,36 @@ public class PlanoController {
         carregarDados();
     }
 
-    public void cadastrarPlano(String nome, double preco, Funcionario responsavel) {
+    public String cadastrarPlano(String nome, double preco, Funcionario responsavel) {
         Plano plano = new Plano(nome, preco);
         plano.setResponsavel(responsavel);
         planos.add(plano);
         salvarDados();
         registrarLog("Plano cadastrado: " + plano.getNome() + " - Responsável: " + responsavel.getNome());
-        System.out.println("Plano cadastrado com sucesso!");
+        return "Plano cadastrado com sucesso!";
     }
 
-    public void listarPlanos() {
+    public String listarPlanos() {
         if (planos.isEmpty()) {
-            System.out.println("Nenhum plano cadastrado.");
-            return;
+            return "Nenhum plano cadastrado.";
+    
         }
 
         for (int i = 0; i < planos.size(); i++) {
-            System.out.println((i + 1) + ". " + planos.get(i));
+            return ((i + 1) + ". " + planos.get(i));
         }
+
+        return "Lista de planos!";
     }
 
-    public void removerPlano(int indice) {
+    public String removerPlano(int indice) {
         if (indice >= 0 && indice < planos.size()) {
             Plano removido = planos.remove(indice);
             salvarDados();
             registrarLog("Plano removido: " + removido.getNome());
-            System.out.println("Plano removido com sucesso!");
+            return "Plano removido com sucesso!";
         } else {
-            System.out.println("Índice inválido.");
+            return "Índice inválido.";
         }
     }
 
@@ -54,31 +56,35 @@ public class PlanoController {
         return null;
     }
 
-    private void salvarDados() {
+    private String salvarDados() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             out.writeObject(planos);
         } catch (IOException e) {
-            System.out.println("Erro ao salvar dados de planos.");
+            return "Erro ao salvar dados de planos.";
         }
+        return "Dados salvos com sucesso";
     }
 
-    private void carregarDados() {
+    private String carregarDados() {
         File file = new File(arquivo);
-        if (!file.exists()) return;
+        if (!file.exists()) return "Arquivo inexistente";
 
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
             planos = (List<Plano>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Erro ao carregar dados de planos.");
+            return "Erro ao carregar dados de planos.";
         }
+
+        return "Dados carregados com sucesso";
     }
 
-    private void registrarLog(String mensagem) {
+    private String registrarLog(String mensagem) {
         try (FileWriter fw = new FileWriter(log, true)) {
             fw.write(mensagem + "\n");
         } catch (IOException e) {
-            System.out.println("Erro ao escrever no log.");
+            return ("Erro ao escrever no log.");
         }
+        return "Log registrado com sucesso!";
     }
 
     public List<Plano> getPlanos() {
